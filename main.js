@@ -1,8 +1,9 @@
-scoreLeftWrist=0
 song1=""
 song2=""
 song1_status=""
 song2_status=""
+scoreLeftWrist=0
+scoreRightWrist=0
 
 function preload(){
     song1=loadSound("Dog.mp3")
@@ -36,17 +37,31 @@ function draw(){
     if(scoreLeftWrist > 0.2){
         circle(leftWristX,leftWristY,20)
         song2.stop()
+
+        if(song1_status==false){
+            song1.play()
+            document.getElementById("songplaying").innerHTML="Song playing: Dog by C418"
+        }
         }
 
-        if(song1_status=="false"){
-            document.getElementById("songplaying").innerHTML="Song currently playing is Dog by C418"
-        }
+        if(scoreRightWrist > 0.2){
+            circle(rightWristX,rightWristY,20)
+            song1.stop()
+    
+            if(song2_status==false){
+                song2.play()
+                document.getElementById("songplaying").innerHTML="Song playing: Haggstrom by C418"
+            }
+            }
 }
 
 function gotPoses(results){
     if(results.length > 0){
         console.log(results)
         scoreLeftWrist=results[0].pose.keypoints[9].score
+        scoreRightWrist=results[0].pose.keypoints[10].score
+        console.log("scoreLeftWrist = "+scoreLeftWrist+" | scoreRightWrist = "+scoreRightWrist+".")
+
         leftWristX=results[0].pose.leftWrist.x
         leftWristY=results[0].pose.leftWrist.y
         console.log("leftWristX = "+leftWristX+" | leftWristY = "+leftWristY)
